@@ -54,6 +54,10 @@ class GameObject:
         self.position = (SCREEN_WIDTH // 2), (SCREEN_HEIGHT // 2)
         self.body_color = None
 
+    def draw(self):
+        """Пустой метод для его дальнейшего переделывания."""
+        pass
+
 
 class Apple(GameObject):
     """Класс описывающий яблоко на игровом поле."""
