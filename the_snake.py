@@ -66,7 +66,7 @@ class GameObject:
 class Apple(GameObject):
     """Класс описывающий яблоко на игровом поле."""
 
-    def __init__(self, color=APPLE_COLOR, busy_coordinates=(CENTER_OF_BOARD)):
+    def __init__(self, color=APPLE_COLOR, busy_coordinates=(CENTER_OF_BOARD,)):
         """Конструктор класса, где задана позиция и поменян цвет объекта."""
         super().__init__(color)
         self.randomize_position(busy_coordinates)
@@ -119,8 +119,11 @@ class Snake(GameObject):
         head = (((x + (direction_x * GRID_SIZE)) % SCREEN_WIDTH),
                 ((y + (direction_y * GRID_SIZE)) % SCREEN_HEIGHT))
         self.positions.insert(0, head)
-        if self.length < len(self.positions):
-            self.last = self.positions.pop()
+        self.last = (
+            self.positions.pop()
+            if self.length < len(self.positions)
+            else None
+        )
 
     def check_to_reset(self):
         """Метод проверяющий врезалась ли змейка сама в себя."""
@@ -180,7 +183,7 @@ def main():
         if snake.get_head_position() == apple.position:
             snake.length += 1
             apple.randomize_position(snake.positions)
-        if snake.check_to_reset():
+        elif snake.check_to_reset():
             snake.reset()
             apple.randomize_position(snake.positions)
             screen.fill(BOARD_BACKGROUND_COLOR)
